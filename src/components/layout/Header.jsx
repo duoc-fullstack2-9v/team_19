@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import '../../index.css' // Ajusté la ruta del CSS
-import logo from '/src/images/a (14).png'
+import logo from '/src/images/Logo_MC.png'
 /*
   El logo ya está importado correctamente con:
   Para usarlo, reemplaza src="a(14).png" por src={logo} en el <img>:
