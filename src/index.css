@@ -1,0 +1,322 @@
+* {
+  /* margin: 0; */
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-image: url('./images/eva.jpg'); /* Ruta desde index.css */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+}
+
+.titulo {
+    text-align: center;
+    font-size: 50px;
+    color: white;
+    margin-top: 150px;
+    margin-bottom: 20px;
+    font-family:gothic;
+    text-shadow: 2px 2px 4px #68fa14;
+    position: absolute ;
+}
+
+.navbar {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    padding-right: 100px;
+
+    .ima {
+        height: 70px;
+        margin-right: 7px;
+        
+    }
+
+    .nav-links {
+        display: block;
+        list-style: none;
+        margin-left: auto;
+        padding-bottom: 10px;
+        
+        
+    }
+}
+
+/* Barra superior personalizada */
+header {
+    background: rgba(0, 0, 0, 0.45);
+    color: #fff;
+    width: 100%;
+    padding: 1px;
+    margin-top: 50px;
+    margin-bottom: 1px;
+    border-radius: 29px;
+    height: 60px; /*este es el contorno de la barra */
+}
+
+.top-nav-links {
+    display: inline-flex;
+    gap: 18px;
+    align-items: center;
+    
+    
+    
+}
+
+.nav-link {
+    display: inline-block;
+    padding: 5px 14px;
+    color: #e6e6e6;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: background 0.18s, color 0.18s;
+    font-size: 15px;
+}
+
+.nav-link:hover {
+    background: rgba(255,255,255,0.06);
+    color: #fff;
+    margin-top: 6px;
+    margin-bottom: 10px;
+    
+    
+}
+
+.nav-link.active {
+    background: #007bff;
+    color: #fff;
+    
+}
+
+/* esta es la barra de busqueda */
+header .buscar {
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.945);
+    min-width: 220px;
+    
+    
+    
+}
+
+header button {
+    padding: 8px 22px;
+    border-radius: 8px;
+    border: none;
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    cursor: pointer;
+}
+
+header button:hover {
+    background: rgba(255,255,255,0.12);
+    margin: 5px;
+    
+}
+
+.contenedor {
+    margin: 20px 100px; /* ← MARGEN: 20px arriba/abajo, auto izquierda/derecha */
+    height: auto;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 25px;
+    padding: 20px;
+    width: calc(100% - 40px); /* Ocupa casi todo el ancho con márgenes */
+    max-width: 1200px;        /* Límite máximo */
+}
+
+/* Estilo único para todas las imágenes de productos */
+.producto-imagen { /* CORREGIDO: era "productos-imagen" */
+    width: 217px;  /* Tamaño más pequeño pero visible */
+    height: 345px; /* Mantiene proporción 2:3 típica de cómics */
+    object-fit: cover;
+    margin-right: 100px;
+    border: 5px solid #020500;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: block; /* Asegura que sea elemento de bloque */
+}
+
+.producto-imagen:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.producto {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0; /* Eliminar márgenes extra */
+    padding: 0;
+}
+
+.producto-overlay {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 2;
+    width: calc(100% - 16px);
+}
+
+.footer {
+    
+        text-align: center;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.521);
+        margin-top: 5px;
+        margin-bottom: 20px;
+        font-family:gothic;
+        text-shadow: 1px 1px 2px #000000;
+}
+
+
+/* Fondo oscuro que cubre toda la pantalla */
+.popup-overlay {
+    display: none; /* Oculto por defecto */
+    position: fixed; /* Se mantiene en el mismo lugar al hacer scroll */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Fondo semi-transparente */
+    z-index: 1000; /* Asegura que el popup esté encima de otros elementos */
+    justify-content: center; /* Centra el contenido horizontalmente */
+    align-items: center; /* Centra el contenido verticalmente */
+}
+
+/* Contenido del popup */
+.popup-content {
+    background-color: rgb(173, 171, 171);
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    position: relative; /* Para posicionar el botón de cerrar */
+    width: 100%;
+    max-width: 400px; /* Ancho máximo del popup */
+    text-align: center; /* Centra el texto dentro del contenido */
+}
+
+/* Estilo del botón de cerrar */
+.cerrarPopup {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+label {
+  display: block;
+  margin-bottom: 3px;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 40%;
+  padding: 8px;
+  padding-top: 5px;
+  margin-top: 60px;
+  margin-right: 4px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 9px;
+  box-sizing: border-box; /* Para incluir padding y borde en el ancho */
+}
+
+button[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  margin: 10px 0;
+  margin-top: 10px;
+  margin-bottom: -11px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  width: 100%;
+}
+
+button[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+.producto {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px;
+}
+
+.producto-overlay {
+    position: absolute;
+    top: -1px;
+    left: -69px;/*este los core hacia los lados*/
+    right: 8px;
+    display: flex;
+    justify-content: space-between; /* ← Esto separa los elementos a los extremos */
+    align-items: center;
+    z-index: 12;
+    width: calc(100% + 31px); /* ← Ajusta el ancho considerando el left negativo */
+    padding: 4px 1px; /* ← AGREGA padding para más separación */
+}
+
+.precio {
+    /* margin: 2px 10px 5px 1px ; */
+    background: rgba(225, 223, 223, 0.7);
+    color: #000000;
+    padding: 6px 10px; /* ← AUMENTA: padding más generoso */
+    border-radius: 8px; /* ← AUMENTA: bordes más redondeados */
+    font-weight: bold;
+    font-size: 0.9rem; /* ← AJUSTA: tamaño de fuente */
+    margin-right: auto; /* ← Empuja el carrito hacia la derecha */
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; /* ← AGREGA: fuente consistente */
+}
+
+.carrito-icono {
+    background: #fff;
+    border-radius: 50%;
+    padding: 6px; /* ← AUMENTA: padding más grande */
+    cursor: pointer;
+    font-size: 1.1rem; /* ← AJUSTA: tamaño del icono */
+    margin-left: 38px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3); /* ← MEJORA: sombra más pronunciada */
+    transition: all 0.3s ease; /* ← MEJORA: transición suave para todos los efectos */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px; /* ← AGREGA: ancho fijo */
+    height: 32px; /* ← AGREGA: alto fijo */
+    margin-left: auto; /* ← Empuja el carrito hacia la derecha */
+}
+
+.carrito-icono:hover {
+    background: #007bff; /* ← CAMBIA: color al hacer hover */
+    color: white; /* ← AGREGA: color de texto blanco */
+    transform: scale(1.1); /* ← AGREGA: efecto de escala al hover */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4); /* ← MEJORA: sombra más intensa al hover */
+}
+
+/* Mostrar popup cuando está activo */
+.popup-overlay {
+    display: flex;
+}
