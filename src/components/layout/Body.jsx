@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../../index.css';
+import '../styles/Body.css';
 
 const productos = [
   { id: 1, nombre: "New Mutants Combate el Futuro 3 de 3", precio: 5990, imagen: "./assets/covers/new mutants combate el futuro 3 de 3.jpg", enlace: "/compra.html" },
@@ -143,7 +144,6 @@ export const Body = ({ searchTerm = '' }) => {
         <span 
           className="carrito-icono" 
           onClick={() => agregarAlCarrito(producto.id)}
-          style={{ cursor: 'pointer' }}
         >
           🛒
         </span>
@@ -169,15 +169,9 @@ export const Body = ({ searchTerm = '' }) => {
             <p>Tu carrito está vacío</p>
           ) : (
             <>
-              <ul style={{ listStyle: 'none', padding: 0, maxHeight: '300px', overflowY: 'auto' }}>
+              <ul className="carrito-list">
                 {carrito.map(item => (
-                  <li key={item.id} style={{ 
-                    padding: '10px', 
-                    borderBottom: '1px solid #ddd',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center'
-                  }}>
+                  <li key={item.id} className="carrito-item">
                     <div>
                       <strong>{item.nombre}</strong>
                       <br />
@@ -187,77 +181,30 @@ export const Body = ({ searchTerm = '' }) => {
                   </li>
                 ))}
               </ul>
-              <div style={{ marginTop: '20px', padding: '10px', backgroundColor: '#f5f5f5', borderRadius: '5px' }}>
+              <div className="carrito-total">
                 <strong>Total: ${calcularTotal().toLocaleString('es-CL')}</strong>
               </div>
             </>
           )}
           
           {!modoPago ? (
-            <div style={{ marginTop: '20px', display: 'flex', gap: '10px', justifyContent: 'center' }}>
+            <div className="carrito-actions">
               {carrito.length > 0 && (
-                <button 
-                  onClick={() => setModoPago(true)}
-                  style={{
-                    padding: '10px 20px',
-                    backgroundColor: '#007bff',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '5px',
-                    cursor: 'pointer'
-                  }}
-                >
-                  Proceder al Pago
-                </button>
+                <button onClick={() => setModoPago(true)} className="btn btn-primary">Proceder al Pago</button>
               )}
-              <button 
-                onClick={() => setMostrarCarrito(false)}
-                style={{
-                  padding: '10px 20px',
-                  backgroundColor: '#6c757d',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '5px',
-                  cursor: 'pointer'
-                }}
-              >
-                {carrito.length > 0 ? 'Seguir Comprando' : 'Cerrar'}
-              </button>
+              <button onClick={() => setMostrarCarrito(false)} className="btn btn-secondary">{carrito.length > 0 ? 'Seguir Comprando' : 'Cerrar'}</button>
               {carrito.length > 0 && (
-                <button 
-                  onClick={vaciarCarrito}
-                  style={{
-                    padding: '10px 20px',
-                    backgroundColor: '#dc3545',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '5px',
-                    cursor: 'pointer'
-                  }}
-                >
-                  Vaciar Carrito
-                </button>
+                <button onClick={vaciarCarrito} className="btn btn-danger">Vaciar Carrito</button>
               )}
             </div>
           ) : (
-            <div style={{ marginTop: '20px' }}>
+            <div className="mt-8">
               <h3>Selecciona forma de pago</h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                <button onClick={() => pagar()} style={{ padding: '10px', backgroundColor: '#28a745', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
-                  Tarjeta de Débito
-                </button>
-                <button onClick={() => pagar()} style={{ padding: '10px', backgroundColor: '#17a2b8', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
-                  Tarjeta de Crédito
-                </button>
-                <button onClick={() => pagar()} style={{ padding: '10px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
-                  PayPal
-                </button>
-                <button 
-                  onClick={() => setModoPago(false)}
-                  style={{ padding: '10px', backgroundColor: '#6c757d', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}
-                >
-                  Cancelar
-                </button>
+              <div className="payment-options">
+                <button onClick={() => pagar()} className="btn btn-success">Tarjeta de Débito</button>
+                <button onClick={() => pagar()} className="btn btn-info">Tarjeta de Crédito</button>
+                <button onClick={() => pagar()} className="btn btn-primary">PayPal</button>
+                <button onClick={() => setModoPago(false)} className="btn btn-secondary">Cancelar</button>
               </div>
             </div>
           )}
@@ -275,20 +222,7 @@ export const Body = ({ searchTerm = '' }) => {
           <h2>¡Pago Exitoso! 🎉</h2>
           <p>Que disfrutes tus comics :D</p>
           <p>Te llegará al correo la boleta de compra</p>
-          <button 
-            onClick={vaciarCarrito}
-            style={{
-              padding: '10px 20px',
-              backgroundColor: '#28a745',
-              color: 'white',
-              border: 'none',
-              borderRadius: '5px',
-              cursor: 'pointer',
-              marginTop: '20px'
-            }}
-          >
-            Cerrar
-          </button>
+          <button onClick={vaciarCarrito} className="btn btn-success popup-close-btn">Cerrar</button>
         </div>
       </div>
     );
@@ -297,22 +231,8 @@ export const Body = ({ searchTerm = '' }) => {
   return (
     <div>
       {/* Botón para ver carrito */}
-      <div style={{ textAlign: 'center', margin: '20px 0' }}>
-        <button 
-          onClick={() => setMostrarCarrito(true)}
-          style={{
-            padding: '12px 24px',
-            fontSize: '16px',
-            backgroundColor: '#007bff',
-            color: 'white',
-            border: 'none',
-            borderRadius: '8px',
-            cursor: 'pointer',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
-          }}
-        >
-          🛒 Ver Carrito ({carrito.reduce((total, item) => total + item.cantidad, 0)})
-        </button>
+      <div className="cart-button-wrapper">
+        <button onClick={() => setMostrarCarrito(true)} className="cart-button">🛒 Ver Carrito ({carrito.reduce((total, item) => total + item.cantidad, 0)})</button>
       </div>
 
       {/* Grid de productos */}

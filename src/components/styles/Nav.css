@@ -1,0 +1,21 @@
+/* Styles for Nav */
+.nav-header {
+  border-bottom: 1px solid #faf7f7ff;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.top-nav-links { display: flex; gap: 8px; }
+
+.nav-actions { display: flex; gap: 8px; align-items: center; }
+
+.buscar { padding: 6px 8px; margin-top: 0; margin-bottom: 1px; }
+
+.nav-button { margin-right: 8px; }
+.mr-8 { margin-right: 8px; }
+.nav-greeting { margin-right: 8px; }
+
+.form-actions { margin-top: 8px; }
+.btn-cancel { margin-left: 8px; }

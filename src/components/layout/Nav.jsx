@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import '../../index.css' // Asegúrate de tener este archivo CSS
+import '../styles/Nav.css'
 
 export const Nav = ({ onSearch, user, onLogin, onLogout }) => {
   const [showRegisterPopup, setShowRegisterPopup] = useState(false);
@@ -31,7 +32,7 @@ export const Nav = ({ onSearch, user, onLogin, onLogout }) => {
   // linkStyle eliminado: ahora usamos clases CSS en index.css
 
   return (
-    <header style={{ borderBottom: '1px solid #faf7f7ff', padding: '8px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+    <header className="nav-header">
       <nav className="top-nav-links">
         {/* Inicio: muestra Body en la ruta raíz */}
         <NavLink to="/" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>Inicio</NavLink>
@@ -48,7 +49,7 @@ export const Nav = ({ onSearch, user, onLogin, onLogout }) => {
         )}
       </nav>
 
-      <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+      <div className="nav-actions">
         <form onSubmit={(e) => { e.preventDefault(); emitSearch(term); }}>
           <input
             type="text"
@@ -56,17 +57,17 @@ export const Nav = ({ onSearch, user, onLogin, onLogout }) => {
             className="buscar"
             value={term}
             onChange={(e) => { setTerm(e.target.value); emitSearch(e.target.value); }}
-            style={{ padding: '6px 8px', marginTop: '0px', marginBottom: '1px' }}//aqui esta el buscador
+            // styles moved to Nav.css
           />
         </form>
 
         <div>
-          <button onClick={() => setShowRegisterPopup(true)} style={{ marginRight: 8 }}>Registrarse</button>
+          <button onClick={() => setShowRegisterPopup(true)} className="nav-button">Registrarse</button>
           {!user ? (
             <button onClick={() => setShowLoginPopup(true)}>Iniciar sesión</button>
           ) : (
             <>
-              <span style={{ marginRight: 8 }}>Hola, {user.name}</span>
+              <span className="nav-greeting">Hola, {user.name}</span>
               <button onClick={() => { if (typeof onLogout === 'function') onLogout(); }}>Cerrar sesión</button>
             </>
           )}
@@ -74,7 +75,7 @@ export const Nav = ({ onSearch, user, onLogin, onLogout }) => {
       </div>
 
       {showRegisterPopup && (
-        <div className="popup">
+        <div className="popup-overlay active">
           <div className="popup-content">
             <h2>Registro</h2>
             <RegistroForm onClose={() => setShowRegisterPopup(false)} onRegister={(newUser) => {
@@ -94,10 +95,10 @@ export const Nav = ({ onSearch, user, onLogin, onLogout }) => {
         </div>
       )}
       {showLoginPopup && (
-        <div className="popup">
+        <div className="popup-overlay active">
           <div className="popup-content">
             <h2>Iniciar sesión</h2>
-            <form onSubmit={(e) => {
+              <form onSubmit={(e) => {
               e.preventDefault();
               // Primero verificar users en localStorage
               const users = getStoredUsers();
@@ -162,9 +163,9 @@ function RegistroForm({ onClose, onRegister }) {
       <label>
         <input type="checkbox" checked={isAdmin} onChange={(e) => setIsAdmin(e.target.checked)} /> Dar rol admin
       </label>
-      <div style={{ marginTop: 8 }}>
+      <div className="form-actions">
         <button type="submit">Registrar</button>
-        <button type="button" onClick={onClose} style={{ marginLeft: 8 }}>Cancelar</button>
+        <button type="button" onClick={onClose} className="btn-cancel">Cancelar</button>
       </div>
     </form>
   )
