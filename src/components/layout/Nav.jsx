@@ -38,12 +38,11 @@ export const Nav = ({ onSearch, user, onLogin, onLogout }) => {
         <NavLink to="/" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>Inicio</NavLink>
         {/* Orden: Biblioteca, Busqueda, Carrito, (Admin) */}
         <NavLink to="/biblioteca" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>Biblioteca</NavLink>
-        <NavLink to="/busqueda" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>Busqueda</NavLink>
-        <NavLink to="/carrito" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>Carrito</NavLink>
+        
         {user?.isAdmin && (
           <>
             <NavLink to="/admin" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>Admin</NavLink>
-            <NavLink to="/editar" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>Editar</NavLink>
+            
             <NavLink to="/crear" className={({isActive}) => isActive ? 'nav-link active' : 'nav-link'}>Crear</NavLink>
           </>
         )}

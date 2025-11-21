@@ -2,7 +2,6 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, test, expect } from 'vitest'
-
 import { Body } from '../../src/components/layout/Body'
 
 describe('Body (funcional)', () => {
