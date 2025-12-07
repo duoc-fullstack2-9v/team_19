@@ -1,10 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../../index.css';
 import '../styles/Body.css';
 import getProductos from '../../data/productos'; // ahora una función que lee localStorage + defaults
 import getImagenUrl from '../../utils/imagenUtils';
-import { CartContext } from '../../context/cartToken';
+import { useCart } from '../../context/CartContext';
 
 function filterProductos(lista, term) {
   if (!term) return lista;
@@ -13,11 +13,16 @@ function filterProductos(lista, term) {
 }
 
 export const Body = ({ searchTerm = '' }) => {
-  const productos = getProductos();
-  const { cart: carrito, addItem, clearCart, totalCount, totalPrice } = useContext(CartContext);
+  const { cart: carrito, addItem, clearCart, totalCount, totalPrice, productos: productosCtx, loading } = useCart();
+  const productos = productosCtx?.length ? productosCtx : getProductos();
   const [mostrarCarrito, setMostrarCarrito] = useState(false);
   const [mostrarPagoExito, setMostrarPagoExito] = useState(false);
   const [modoPago, setModoPago] = useState(false);
+
+  // Mostrar estados simples mientras carga
+  if (loading && !productos.length) {
+    return <div className="contenedor"><p>Cargando productos...</p></div>;
+  }
 
   const agregarAlCarrito = (id) => {
     const producto = productos.find(p => p.id === id);

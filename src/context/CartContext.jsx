@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
-import { CartContextToken } from './cartToken';
 import productsService from '../services/productsService';
+import getProductos from '../data/productos';
 
 export const CartContext = React.createContext();
 
@@ -10,7 +10,7 @@ export const CartProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Cargar productos desde la API
+  // Cargar productos desde la API; si falla, usar fallback local
   const loadProductos = useCallback(async () => {
     try {
       setLoading(true);
@@ -19,7 +19,9 @@ export const CartProvider = ({ children }) => {
       setProductos(data);
     } catch (err) {
       console.error('Error al cargar productos:', err);
-      setError(err.message);
+      // Fallback a productos locales para evitar pantallas en blanco
+      setProductos(getProductos());
+      setError(null);
     } finally {
       setLoading(false);
     }
