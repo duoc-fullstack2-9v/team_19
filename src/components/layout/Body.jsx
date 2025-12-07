@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import '../../index.css';
 import '../styles/Body.css';
-import getProductos from '../../data/productos'; // now a function that lee localStorage + defaults
+import getProductos from '../../data/productos'; // ahora una función que lee localStorage + defaults
 import getImagenUrl from '../../utils/imagenUtils';
 import { CartContext } from '../../context/cartToken';
 
