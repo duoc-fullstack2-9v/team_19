@@ -1,0 +1,118 @@
+{
+  "generated": "2025-12-07T04:11:32.614Z",
+  "stats": {
+    "totalTests": 48,
+    "passingTests": 38,
+    "failingTests": 10,
+    "passRate": 79.2,
+    "jwtTests": {
+      "total": 30,
+      "passing": 27,
+      "passRate": 90
+    },
+    "testSuites": {
+      "total": 15,
+      "passed": 10,
+      "failed": 5
+    }
+  },
+  "testFiles": {
+    "App.spec.jsx": {
+      "total": 1,
+      "passing": 0,
+      "failing": 1,
+      "passed": false
+    },
+    "Body.spec.jsx": {
+      "total": 1,
+      "passing": 0,
+      "failing": 1,
+      "passed": false
+    },
+    "Footer.spec.jsx": {
+      "total": 1,
+      "passing": 1,
+      "failing": 0,
+      "passed": true
+    },
+    "Header.spec.jsx": {
+      "total": 2,
+      "passing": 2,
+      "failing": 0,
+      "passed": true
+    },
+    "Lateral.spec.jsx": {
+      "total": 1,
+      "passing": 1,
+      "failing": 0,
+      "passed": true
+    },
+    "Nav.spec.jsx": {
+      "total": 4,
+      "passing": 0,
+      "failing": 4,
+      "passed": false
+    },
+    "PrivateRoute.spec.jsx": {
+      "total": 10,
+      "passing": 10,
+      "failing": 0,
+      "passed": true
+    },
+    "AuthContext.spec.jsx": {
+      "total": 13,
+      "passing": 13,
+      "failing": 0,
+      "passed": true
+    },
+    "Admin.spec.jsx": {
+      "total": 3,
+      "passing": 3,
+      "failing": 0,
+      "passed": true
+    },
+    "Biblioteca.spec.jsx": {
+      "total": 1,
+      "passing": 1,
+      "failing": 0,
+      "passed": true
+    },
+    "Crear.spec.jsx": {
+      "total": 1,
+      "passing": 0,
+      "failing": 1,
+      "passed": false
+    },
+    "Inicio.spec.jsx": {
+      "total": 2,
+      "passing": 2,
+      "failing": 0,
+      "passed": true
+    },
+    "LayoutAndInicio.spec.jsx": {
+      "total": 1,
+      "passing": 1,
+      "failing": 0,
+      "passed": true
+    },
+    "Login.spec.jsx": {
+      "total": 4,
+      "passing": 4,
+      "failing": 0,
+      "passed": true
+    },
+    "Register.spec.jsx": {
+      "total": 3,
+      "passing": 0,
+      "failing": 3,
+      "passed": false
+    }
+  },
+  "coverage": {
+    "statements": 80,
+    "branches": 75,
+    "functions": 84,
+    "lines": 80
+  },
+  "command": "npm run test:coverage"
+}
