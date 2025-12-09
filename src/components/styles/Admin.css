@@ -1,0 +1,74 @@
+/* Styles for Admin page */
+.admin-root {
+  padding: 20px;
+}
+
+.admin-title {
+  display: inline-block;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.85);
+  border: 1px solid rgba(255,255,255,0.6);
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.admin-title h2 { margin: 0; }
+
+.admin-block {
+  position: relative;
+  background: rgba(255,255,255,0.95);
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 16px;
+  min-height: 60vh;
+  border: 1px solid rgba(0,0,0,0.12);
+}
+
+.admin-grid {
+  display: flex;
+  gap: 16px;
+}
+
+.admin-left { flex: 1; }
+
+.admin-panel {
+  width: 320px;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th,
+.admin-table td {
+  text-align: center;
+  padding: 8px;
+  vertical-align: middle;
+}
+
+.admin-table th {
+  border-bottom: 1px solid #ddd;
+}
+
+.sep {
+  border-right: 3px solid #000;
+}
+
+.admin-fab {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  padding: 10px 14px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.ml-8 { margin-left: 8px; }
+.mt-8 { margin-top: 8px; }
+
+/* popup-content / popup-overlay are used elsewhere; keep compatibility */

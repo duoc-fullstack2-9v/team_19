@@ -1,0 +1,34 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Layout + Inicio > inicio y layout renderizan correctamente y snapshot 1`] = `
+<DocumentFragment>
+  <header
+    data-testid="header"
+  >
+    Header
+  </header>
+  <nav
+    data-testid="nav"
+  >
+    Nav
+  </nav>
+  <aside
+    data-testid="lateral"
+  >
+    Lateral
+  </aside>
+  <div>
+    inicio
+  </div>
+  <main
+    data-testid="body"
+  >
+    Body
+  </main>
+  <footer
+    data-testid="footer"
+  >
+    Footer
+  </footer>
+</DocumentFragment>
+`;

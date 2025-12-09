@@ -1,0 +1,51 @@
+/* Styles for Nav */
+.nav-header {
+  border-bottom: 1px solid #faf7f7ff;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.top-nav-links { display: flex; gap: 8px; }
+
+.nav-actions { 
+    display: flex; 
+    gap: 8px; 
+    align-items: center;
+}
+
+.nav-actions form {
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+
+.buscar {
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.945);
+    min-width: 280px;
+    height: 40px;
+    font-size: 14px;
+    margin: 40px;
+}
+
+.nav-button { 
+    margin-right: 8px;
+    height: 32px;
+    padding: 4px 12px;
+    box-sizing: border-box;
+}
+
+.nav-actions button {
+    height: 32px;
+    padding: 4px 12px;
+    box-sizing: border-box;
+}
+
+.mr-8 { margin-right: 8px; }
+.nav-greeting { margin-right: 8px; }
+
+.form-actions { margin-top: 8px; }
+.btn-cancel { margin-left: 8px; }
