@@ -11,7 +11,7 @@ export const Register = () => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-  const { register } = useAuth();
+  const { register, error: authError } = useAuth();
 
   const validateForm = () => {
     const newErrors = {};
@@ -43,9 +43,10 @@ export const Register = () => {
 
     setLoading(true);
     try {
-      await register(nombre, email, password);
-      // Si register es exitoso, redirige automáticamente
-      navigate('/');
+      const ok = await register(nombre, email, password);
+      if (ok) {
+        navigate('/');
+      }
     } catch (err) {
       setErrors({ submit: err.message || 'Error en el registro' });
     } finally {
@@ -53,17 +54,20 @@ export const Register = () => {
     }
   };
 
+  const displayError = errors.submit || authError;
+
   return (
     <div className="login-container">
       <div className="login-card">
         <h2>Crear Cuenta</h2>
         
-        {errors.submit && <div className="error-box">{errors.submit}</div>}
+        {displayError && <div className="error-box">{displayError}</div>}
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Nombre completo</label>
+            <label htmlFor="nombre">Nombre completo</label>
             <input
+              id="nombre"
               type="text"
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
@@ -74,8 +78,9 @@ export const Register = () => {
           </div>
 
           <div className="form-group">
-            <label>Email</label>
+            <label htmlFor="email">Email</label>
             <input
+              id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -86,8 +91,9 @@ export const Register = () => {
           </div>
 
           <div className="form-group">
-            <label>Contraseña</label>
+            <label htmlFor="password">Contraseña</label>
             <input
+              id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -98,8 +104,9 @@ export const Register = () => {
           </div>
 
           <div className="form-group">
-            <label>Confirmar contraseña</label>
+            <label htmlFor="passwordConfirm">Confirmar contraseña</label>
             <input
+              id="passwordConfirm"
               type="password"
               value={passwordConfirm}
               onChange={(e) => setPasswordConfirm(e.target.value)}
@@ -127,3 +134,5 @@ export const Register = () => {
     </div>
   );
 };
+
+export default Register;

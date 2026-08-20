@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import '../styles/Admin.css'
 
 export const Crear = () => {
@@ -12,7 +11,6 @@ export const Crear = () => {
   const [preview, setPreview] = useState('');
   const [descripcion, setDescripcion] = useState('');
   const [mensaje, setMensaje] = useState('');
-  const navigate = useNavigate();
 
   useEffect(() => {
     const raw = localStorage.getItem('productos');

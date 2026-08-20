@@ -3,11 +3,19 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, test, expect } from 'vitest'
 import { Body } from '../../src/components/layout/Body'
+import { CartProvider } from '../../src/context/CartContext'
+import { MemoryRouter } from 'react-router-dom'
 
 describe('Body (funcional)', () => {
   test('agrega producto al carrito, procede a pago y muestra éxito', async () => {
     const user = userEvent.setup()
-    const { container } = render(<Body />)
+    const { container } = render(
+      <MemoryRouter>
+        <CartProvider>
+          <Body />
+        </CartProvider>
+      </MemoryRouter>
+    )
 
     // click en el primer icono de carrito (emoji)
     const carritoIcons = container.querySelectorAll('.carrito-icono')

@@ -1,0 +1,12 @@
+node_modules
+dist
+coverage
+.git
+.gitignore
+.env.local
+.env.*.local
+test-results.json
+test-results-json-only.json
+*.log
+npm-debug.log*
+.DS_Store

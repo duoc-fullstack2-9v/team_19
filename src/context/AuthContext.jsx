@@ -1,91 +1,81 @@
-import React, { createContext, useState, useEffect, useCallback } from 'react';
+import React, { createContext, useState, useEffect, useCallback, useContext } from 'react';
+import { authApi } from '../services/api/authApi';
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(() => localStorage.getItem('authToken'));
+  const [token, setToken] = useState(() => {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        return localStorage.getItem('authToken');
+      }
+    } catch {
+      // Ignorar errores de acceso a localStorage
+    }
+    return null;
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   // Función para decodificar JWT
   const decodeToken = useCallback((jwtToken) => {
-    try {
-      const base64Url = jwtToken.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(
-        atob(base64)
-          .split('')
-          .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-          .join('')
-      );
-      return JSON.parse(jsonPayload);
-    } catch (error) {
-      console.error('Error decodificando token:', error);
-      return null;
-    }
+    return authApi.decodeToken(jwtToken);
   }, []);
 
   // Validar token al montar el componente
   useEffect(() => {
+    let isMounted = true;
+
     const validarTokenAlInicio = async () => {
       if (token) {
         try {
-          const response = await fetch('http://localhost:8080/api/auth/validate', {
-            headers: { 'Authorization': `Bearer ${token}` }
-          });
-
-          if (response.ok) {
+          await authApi.validateToken(token);
+          if (isMounted) {
             const decoded = decodeToken(token);
             if (decoded && decoded.sub) {
               setUser({ email: decoded.sub, rol: decoded.rol });
             }
-          } else {
-            // Token inválido
-            setToken(null);
-            localStorage.removeItem('authToken');
           }
-        } catch (error) {
-          console.error('Error validando token:', error);
-          setToken(null);
-          localStorage.removeItem('authToken');
+        } catch (err) {
+          if (isMounted) {
+            console.error('Error validando token:', err);
+            setToken(null);
+            authApi.logout();
+          }
         }
       }
-      setLoading(false);
+      if (isMounted) {
+        setLoading(false);
+      }
     };
 
     validarTokenAlInicio();
+
+    return () => {
+      isMounted = false;
+    };
   }, [token, decodeToken]);
 
   const login = useCallback(async (email, password) => {
     try {
       setError(null);
-      const response = await fetch('http://localhost:8080/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
+      const res = await authApi.login(email, password);
+      const newToken = res.token;
+      setToken(newToken);
 
-      const data = await response.json();
-
-      if (response.ok && data.success) {
-        const newToken = data.data;
-        setToken(newToken);
-        localStorage.setItem('authToken', newToken);
-
-        // Decodificar para obtener información del usuario
-        const decoded = decodeToken(newToken);
-        if (decoded && decoded.sub) {
-          setUser({ email: decoded.sub, rol: decoded.rol });
-        }
-        return true;
-      } else {
-        setError(data.error || 'Error en login');
-        return false;
+      const decoded = res.decoded || decodeToken(newToken);
+      if (decoded && decoded.sub) {
+        setUser({ email: decoded.sub, rol: decoded.rol });
       }
+      return true;
     } catch (err) {
       console.error('Error en login:', err);
-      setError('Error de conexión al servidor');
+      if (err.isNetworkError && (!err.message || err.message === 'Network error' || err.message.includes('conexión') || err.message.includes('fetch'))) {
+        setError('Error de conexión al servidor');
+      } else {
+        setError(err.message || 'Error en login');
+      }
       return false;
     }
   }, [decodeToken]);
@@ -93,40 +83,32 @@ export const AuthProvider = ({ children }) => {
   const register = useCallback(async (nombre, email, password) => {
     try {
       setError(null);
-      const response = await fetch('http://localhost:8080/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ nombre, email, password })
-      });
-
-      const data = await response.json();
-
-      if (response.ok && data.success) {
-        const newToken = data.data;
+      const res = await authApi.register(nombre, email, password);
+      const newToken = res.token;
+      if (newToken) {
         setToken(newToken);
-        localStorage.setItem('authToken', newToken);
-
-        const decoded = decodeToken(newToken);
+        const decoded = res.decoded || decodeToken(newToken);
         if (decoded && decoded.sub) {
           setUser({ email: decoded.sub, rol: decoded.rol });
         }
-        return true;
-      } else {
-        setError(data.error || 'Error en registro');
-        return false;
       }
+      return true;
     } catch (err) {
       console.error('Error en register:', err);
-      setError('Error de conexión al servidor');
+      if (err.isNetworkError && (!err.message || err.message === 'Network error' || err.message.includes('conexión') || err.message.includes('fetch'))) {
+        setError('Error de conexión al servidor');
+      } else {
+        setError(err.message || 'Error en registro');
+      }
       return false;
     }
   }, [decodeToken]);
 
   const logout = useCallback(() => {
+    authApi.logout();
     setToken(null);
     setUser(null);
     setError(null);
-    localStorage.removeItem('authToken');
   }, []);
 
   return (
@@ -137,9 +119,19 @@ export const AuthProvider = ({ children }) => {
 };
 
 export const useAuth = () => {
-  const context = React.useContext(AuthContext);
+  const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth debe usarse dentro de AuthProvider');
+    return {
+      user: null,
+      token: null,
+      loading: false,
+      error: null,
+      login: async () => false,
+      register: async () => false,
+      logout: () => {}
+    };
   }
   return context;
 };
+
+export default AuthProvider;

@@ -1,0 +1,56 @@
+name: CI/CD - Despliegue en AWS (S3 + CloudFront)
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Ejecutar pruebas unitarias
+        run: npm test -- --run
+
+      - name: Compilar proyecto (Vite Build)
+        run: npm run build
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL || '/api' }}
+          VITE_AUTH_API_URL: ${{ secrets.VITE_AUTH_API_URL || '/api/auth' }}
+
+      - name: Configurar credenciales de AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        if: env.AWS_ACCESS_KEY_ID != ''
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION || 'us-east-1' }}
+
+      - name: Sincronizar archivos estáticos con AWS S3
+        if: env.AWS_ACCESS_KEY_ID != ''
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        run: |
+          aws s3 sync dist/ s3://${{ secrets.AWS_S3_BUCKET_NAME }} --delete
+
+      - name: Invalidar caché de CloudFront
+        if: env.AWS_ACCESS_KEY_ID != '' && secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID != ''
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        run: |
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
